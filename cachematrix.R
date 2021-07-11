@@ -3,24 +3,24 @@
  
 ## to enable the makeCacheMatrix on creating and returning the list of  the functions.
 
-makeCacheMatrix <- function(x = matrix()) {
+makeCacheMatrix <- function(x = matrix(sample(1:100,9),3,3)) {
  
-        inv <- NULL
+        q <- NULL
         set <- function(y) {
          
-                original.matrix <<- y
-                inverted.matrix <<- NULL
+                x <<- y
+                q <<- NULL
          
                 }
-        get <- function() {original.matrix}
-        setInverse <- function(solve) {inverted.matrix <<- solve}
-        getInverse <- function() {inverted.matrix}
+        get <- function() {x}
+        setsolve <- function(solve) {q <<- solve}
+        getsolve <- function() {q}
          
 
         list(set = set, 
              get = get, 
-             setInverse = setInverse, 
-             getInverse = getInverse)
+             setsolve = setsolve, 
+             getsolve = getsolve)
             }
 
 
@@ -30,15 +30,14 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
  
-        inverted.matrix <- x$getInverse()
-        if(!is.null(inverted.matrix)) {
-                message("retrieving cached data")
-                return(inverted.matrix)
+        q <- x$getsolve()
+        if(!is.null(q)) {
+                message("getting inversed matrix")
+                return(q)
                 }
  
-        matrix <- x$get()
-        inverted.matrix <- solve(matrix, ...)
-        x$setInverse(inverted.matrix)
-        inverted.matrix
- 
+        data <- x$get()
+        q <- solve(data, ...)
+        x$setsolve(q)
+        q
         }
